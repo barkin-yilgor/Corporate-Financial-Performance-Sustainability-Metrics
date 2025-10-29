@@ -69,8 +69,6 @@ GDP will be used as a **contextual comparison**, to examine whether regions with
 - **H₀ (Null Hypothesis):** ESG performance has no meaningful relationship with financial or environmental outcomes.
 - **H₁ (Alternative Hypothesis):** Companies with **higher ESG performance** tend to exhibit **better financial performance** (e.g., higher ProfitMargin) and **lower environmental impact** (e.g., lower CarbonEmissions, WaterUsage, EnergyConsumption).
 
-- **Companies investing in sustainability generally achieve stronger financial health and lower environmental impact — but this varies across industries and regions.**
-
 ---
 
 ## Data Analysis
