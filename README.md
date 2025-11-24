@@ -73,11 +73,23 @@ GDP will be used as a **contextual comparison**, to examine whether regions with
 
 ## Data Analysis
 
-### 1. Descriptive Trends
+### 1. Data Preprocessing & Cleaning
+- Check for and remove duplicate company records to prevent skewing.
+- Scan for null values in critical columns ('Revenue', 'ESG_Overall').
+- Drop rows with missing financial targets to ensure model accuracy.
+- Convert 'Year' column to datetime objects for time-series analysis.
+   
+**Regional Aggregation Strategy:**
+Challenge: ESG data is Regional (7 zones), GDP data is Country-level (196 nations).
+ - Step A (Mapping): Map each of the 196 countries to one of the 7 ESG regions.
+ - Step B (Aggregation): Group and SUM GDP data by Region and Year.
+ - Step C (Merge): Join datasets on ['Region', 'Year'] keys.
+
+### 2. Descriptive Trends
 - Compare ESG_Overall, ProfitMargin, and CarbonEmissions over time (2015–2025).
 - Visualize industry and region averages to observe **patterns in sustainability vs. profitability**.
 
-### 2. Relationship Exploration
+### 3. Relationship Exploration
 - Scatter plots to examine:
   - ESG vs ProfitMargin
   - ESG vs CarbonEmissions, WaterUsage, and EnergyConsumption
@@ -85,13 +97,13 @@ GDP will be used as a **contextual comparison**, to examine whether regions with
   - Across industries
   - Across regions
 
-### 3. Regional Economic Context 
+### 4. Regional Economic Context 
 - Create a **bar chart** comparing **average ESG_Overall and average ProfitMargin** between:
   - Higher-GDP regions
   - Lower-GDP regions
 - This is a **single contextual comparison** to see whether stronger economies show clearer ESG–performance alignment.
 
-### 4. Interpretation
+### 5. Interpretation
 - Determine whether higher ESG scores are generally associated with:
   - Higher financial performance
   - Lower environmental impact
