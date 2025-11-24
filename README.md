@@ -78,7 +78,8 @@ GDP will be used as a **contextual comparison**, to examine whether regions with
 - Scan for null values in critical columns ('Revenue', 'ESG_Overall').
 - Drop rows with missing financial targets to ensure model accuracy.
 - Convert 'Year' column to datetime objects for time-series analysis.
-   
+- Normalize numerical features (Z-score) to prepare data for K-Means Clustering.
+
 **Regional Aggregation Strategy:**    
 ESG data is Regional (7 zones), GDP data is Country-level (196 nations).
  - Step A (Mapping): Map each of the 196 countries to one of the 7 ESG regions.
