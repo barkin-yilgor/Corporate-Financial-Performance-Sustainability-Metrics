@@ -80,7 +80,7 @@ GDP will be used as a **contextual comparison**, to examine whether regions with
 - Convert 'Year' column to datetime objects for time-series analysis.
    
 **Regional Aggregation Strategy:**    
-Challenge: ESG data is Regional (7 zones), GDP data is Country-level (196 nations).
+ESG data is Regional (7 zones), GDP data is Country-level (196 nations).
  - Step A (Mapping): Map each of the 196 countries to one of the 7 ESG regions.
  - Step B (Aggregation): Group and SUM GDP data by Region and Year.
  - Step C (Merge): Join datasets on ['Region', 'Year'] keys.
