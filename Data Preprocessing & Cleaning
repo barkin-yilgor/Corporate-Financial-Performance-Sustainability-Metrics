@@ -1,0 +1,134 @@
+# Import necessary libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy.stats import pearsonr, ttest_ind
+import numpy as np
+
+# Load the datasets
+ESG = pd.read_csv('ESG_Data.csv')
+WEO = pd.read_csv('WEO_Data.csv')
+
+#### Data Preprocessing & Cleaning
+
+## ESG Data Preprocessing & Cleaning
+
+# Fixed missing 1000 rows growth rates
+# Removed duplicates and rows with missing financial targets.
+# Converted 'Year' to integer for consistent merging.
+# Filled 1,000 missing Growth Rates using Industry Medians (to save data).
+
+ESG = ESG.drop_duplicates()
+ESG = ESG.dropna(subset=['Revenue', 'ProfitMargin', 'ESG_Overall'])
+ESG['Year'] = ESG['Year'].astype(int)
+
+industry_medians = ESG.groupby('Industry')['GrowthRate'].median()
+ESG['GrowthRate'] = ESG['GrowthRate'].fillna(ESG['Industry'].map(industry_medians))
+
+## WEO Data Preprocessing & Cleaning
+
+# Turned year columns (2015, 2016...) into rows
+# Forced to string so I can edit the text
+# Removed dots/commas, converted to a real number
+# Summed GDP by Region & Year
+
+WEO_Processed = WEO.melt(id_vars=['Country'], var_name='Year', value_name='GDP')
+
+WEO_Processed['GDP'] = WEO_Processed['GDP'].astype(str)
+
+WEO_Processed['GDP'] = WEO_Processed['GDP'].str.replace(',', '', regex=False)
+WEO_Processed['GDP'] = WEO_Processed['GDP'].str.replace('.', '', regex=False)
+
+WEO_Processed['GDP'] = pd.to_numeric(WEO_Processed['GDP'], errors='coerce')
+WEO_Processed['Year'] = pd.to_numeric(WEO_Processed['Year'], errors='coerce')
+
+
+# Regional Aggregation Strategy
+country_map = {
+
+    # NORTH AMERICA 
+    'United States': 'North America', 'Canada': 'North America',
+
+    # LATIN AMERICA 
+    'Mexico': 'Latin America', 'Argentina': 'Latin America', 'Bolivia': 'Latin America',
+    'Brazil': 'Latin America', 'Chile': 'Latin America', 'Colombia': 'Latin America',
+    'Costa Rica': 'Latin America', 'Dominican Republic': 'Latin America', 'Ecuador': 'Latin America',
+    'El Salvador': 'Latin America', 'Guatemala': 'Latin America', 'Haiti': 'Latin America',
+    'Honduras': 'Latin America', 'Jamaica': 'Latin America', 'Nicaragua': 'Latin America',
+    'Panama': 'Latin America', 'Paraguay': 'Latin America', 'Peru': 'Latin America',
+    'Uruguay': 'Latin America', 'Venezuela': 'Latin America', 'Antigua and Barbuda': 'Latin America',
+    'Aruba': 'Latin America', 'The Bahamas': 'Latin America', 'Barbados': 'Latin America',
+    'Belize': 'Latin America', 'Dominica': 'Latin America', 'Grenada': 'Latin America',
+    'Guyana': 'Latin America', 'St. Kitts and Nevis': 'Latin America', 'St. Lucia': 'Latin America',
+    'St. Vincent and the Grenadines': 'Latin America', 'Suriname': 'Latin America',
+    'Trinidad and Tobago': 'Latin America', 'Puerto Rico': 'Latin America',
+
+    # EUROPE 
+    'Albania': 'Europe', 'Andorra': 'Europe', 'Armenia': 'Europe', 'Austria': 'Europe',
+    'Belarus': 'Europe', 'Belgium': 'Europe', 'Bosnia and Herzegovina': 'Europe',
+    'Bulgaria': 'Europe', 'Croatia': 'Europe', 'Cyprus': 'Europe', 'Czech Republic': 'Europe',
+    'Denmark': 'Europe', 'Estonia': 'Europe', 'Finland': 'Europe', 'France': 'Europe',
+    'Georgia': 'Europe', 'Germany': 'Europe', 'Greece': 'Europe', 'Hungary': 'Europe',
+    'Iceland': 'Europe', 'Ireland': 'Europe', 'Italy': 'Europe', 'Kosovo': 'Europe',
+    'Latvia': 'Europe', 'Lithuania': 'Europe', 'Luxembourg': 'Europe', 'Malta': 'Europe',
+    'Moldova': 'Europe', 'Montenegro': 'Europe', 'Netherlands': 'Europe', 'North Macedonia': 'Europe',
+    'Norway': 'Europe', 'Poland': 'Europe', 'Portugal': 'Europe', 'Romania': 'Europe',
+    'Russia': 'Europe', 'San Marino': 'Europe', 'Serbia': 'Europe', 'Slovak Republic': 'Europe',
+    'Slovenia': 'Europe', 'Spain': 'Europe', 'Sweden': 'Europe', 'Switzerland': 'Europe',
+    'Türkiye': 'Europe', 'Ukraine': 'Europe', 'United Kingdom': 'Europe',
+
+    # ASIA 
+    'Afghanistan': 'Asia', 'Bangladesh': 'Asia', 'Bhutan': 'Asia', 'Brunei Darussalam': 'Asia',
+    'Cambodia': 'Asia', 'China': 'Asia', 'Hong Kong SAR': 'Asia', 'India': 'Asia',
+    'Indonesia': 'Asia', 'Japan': 'Asia', 'Kazakhstan': 'Asia', 'Korea': 'Asia',
+    'Kyrgyz Republic': 'Asia', 'Lao P.D.R.': 'Asia', 'Macao SAR': 'Asia', 'Malaysia': 'Asia',
+    'Maldives': 'Asia', 'Mongolia': 'Asia', 'Myanmar': 'Asia', 'Nepal': 'Asia',
+    'Pakistan': 'Asia', 'Philippines': 'Asia', 'Singapore': 'Asia', 'Sri Lanka': 'Asia',
+    'Taiwan Province of China': 'Asia', 'Tajikistan': 'Asia', 'Thailand': 'Asia',
+    'Timor-Leste': 'Asia', 'Turkmenistan': 'Asia', 'Uzbekistan': 'Asia', 'Vietnam': 'Asia',
+
+    # OCEANIA 
+    'Australia': 'Oceania', 'Fiji': 'Oceania', 'Kiribati': 'Oceania', 'Marshall Islands': 'Oceania',
+    'Micronesia': 'Oceania', 'Nauru': 'Oceania', 'New Zealand': 'Oceania', 'Palau': 'Oceania',
+    'Papua New Guinea': 'Oceania', 'Samoa': 'Oceania', 'Solomon Islands': 'Oceania',
+    'Tonga': 'Oceania', 'Tuvalu': 'Oceania', 'Vanuatu': 'Oceania',
+
+    # MIDDLE EAST 
+    'Bahrain': 'Middle East', 'Islamic Republic of Iran': 'Middle East', 'Iraq': 'Middle East',
+    'Israel': 'Middle East', 'Jordan': 'Middle East', 'Kuwait': 'Middle East',
+    'Lebanon': 'Middle East', 'Oman': 'Middle East', 'Qatar': 'Middle East',
+    'Saudi Arabia': 'Middle East', 'Syria': 'Middle East', 'United Arab Emirates': 'Middle East',
+    'West Bank and Gaza': 'Middle East', 'Yemen': 'Middle East', 'Azerbaijan': 'Middle East',
+
+
+    # AFRICA 
+    'Algeria': 'Africa', 'Angola': 'Africa', 'Benin': 'Africa', 'Botswana': 'Africa',
+    'Burkina Faso': 'Africa', 'Burundi': 'Africa', 'Cabo Verde': 'Africa', 'Cameroon': 'Africa',
+    'Central African Republic': 'Africa', 'Chad': 'Africa', 'Comoros': 'Africa',
+    'Democratic Republic of the Congo': 'Africa', 'Republic of Congo': 'Africa',
+    'Côte d\'Ivoire': 'Africa', 'Djibouti': 'Africa', 'Egypt': 'Africa',
+    'Equatorial Guinea': 'Africa', 'Eritrea': 'Africa', 'Eswatini': 'Africa',
+    'Ethiopia': 'Africa', 'Gabon': 'Africa', 'The Gambia': 'Africa', 'Ghana': 'Africa',
+    'Guinea': 'Africa', 'Guinea-Bissau': 'Africa', 'Kenya': 'Africa', 'Lesotho': 'Africa',
+    'Liberia': 'Africa', 'Libya': 'Africa', 'Madagascar': 'Africa', 'Malawi': 'Africa',
+    'Mali': 'Africa', 'Mauritania': 'Africa', 'Mauritius': 'Africa', 'Morocco': 'Africa',
+    'Mozambique': 'Africa', 'Namibia': 'Africa', 'Niger': 'Africa', 'Nigeria': 'Africa',
+    'Rwanda': 'Africa', 'São Tomé and Príncipe': 'Africa', 'Senegal': 'Africa',
+    'Seychelles': 'Africa', 'Sierra Leone': 'Africa', 'Somalia': 'Africa', 'South Africa': 'Africa',
+    'South Sudan': 'Africa', 'Sudan': 'Africa', 'Tanzania': 'Africa', 'Togo': 'Africa',
+    'Tunisia': 'Africa', 'Uganda': 'Africa', 'Zambia': 'Africa', 'Zimbabwe': 'Africa'
+
+}
+
+WEO_Processed['Region'] = WEO_Processed['Country'].map(country_map)
+WEO_Regional = WEO_Processed.groupby(['Region', 'Year'])['GDP'].sum().reset_index()
+
+# Merged ESG & Regional WEO together
+Merged = pd.merge(ESG, WEO_Regional, on=['Region', 'Year'], how='left')
+
+# Created the Z-score for ESG and ProfitMargin (needed for K-Means)
+Merged['ESG_Zscore'] = (Merged['ESG_Overall'] - Merged['ESG_Overall'].mean()) / Merged['ESG_Overall'].std()
+Merged['ProfitMargin_Zscore'] = (Merged['ProfitMargin'] - Merged['ProfitMargin'].mean()) / Merged['ProfitMargin'].std()
+
+# Saved the final clean file
+Merged.to_csv('ESG_WEO_Merged.csv', index=False)
