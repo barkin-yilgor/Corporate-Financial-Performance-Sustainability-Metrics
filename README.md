@@ -66,49 +66,39 @@ GDP will be used as a **contextual comparison**, to examine whether regions with
 
 ## Research Hypothesis
 
-- **H₀ (Null Hypothesis):** ESG performance has no meaningful relationship with financial or environmental outcomes.
-- **H₁ (Alternative Hypothesis):** Companies with **higher ESG performance** tend to exhibit **better financial performance** (e.g., higher ProfitMargin) and **lower environmental impact** (e.g., lower CarbonEmissions, WaterUsage, EnergyConsumption).
+- **H0 (Null Hypothesis):** ESG performance has no meaningful relationship with financial or environmental outcomes.
+- **H1 (Alternative Hypothesis):** Companies with **higher ESG performance** tend to exhibit **better financial performance** (e.g., higher ProfitMargin) and **lower environmental impact** (e.g., lower CarbonEmissions, WaterUsage, EnergyConsumption).
 
 ---
 
 ## Data Analysis
 
 ### 1. Data Preprocessing & Cleaning
-- Check for and remove duplicate company records to prevent skewing.
-- Scan for null values in critical columns ('Revenue', 'ESG_Overall').
-- Drop rows with missing financial targets to ensure model accuracy.
-- Convert 'Year' column to integer for time-series analysis.
-- Normalize numerical features (Z-score) to prepare data for K-Means Clustering.
+- Data Quality: Check for and remove duplicate company records; drop rows with null values in critical target columns (Revenue, ProfitMargin, ESG_Overall).
+- Imputation: Fill missing GrowthRate values using industry-specific medians to preserve data volume.
+- GDP Data Processing: Transform WEO GDP data from wide-format to long-format and clean string formatting for numeric analysis.
 
-**Regional Aggregation Strategy:**    
+**Regional Aggregation Strategy:**                                            
 ESG data is Regional (7 zones), GDP data is Country-level (196 nations).
- - Step A (Mapping): Map each of the 196 countries to one of the 7 ESG regions.
+ - Step A (Mapping): Maped each of the 196 countries to one of the 7 ESG regions.
  - Step B (Aggregation): Group and SUM GDP data by Region and Year.
  - Step C (Merge): Join datasets on ['Region', 'Year'] keys.
 
-### 2. Descriptive Trends
-- Compare ESG_Overall, ProfitMargin, and CarbonEmissions over time (2015–2025).
-- Visualize industry and region averages to observe **patterns in sustainability vs. profitability**.
+### 2. Visualization
+My main goal was to analyze four high-impact figures to isolate the following relationships:
+ - Scatter plot of ESG Score vs. Profit Margin, color-coded by Region.
+ - A 3-panel dashboard (Carbon, Water, Energy) testing whether higher ESG scores correspond to lower resource intensity.
+ - A scatter plot comparing Average Regional GDP vs. Average ESG Score to verify if wealthy regions inherently score higher.
+ - A boxplot of Profit Margin by Industry (sorted high-to-low) to show why industry-specific benchmarking is necessary.
 
-### 3. Relationship Exploration
-- Scatter plots to examine:
-  - ESG vs ProfitMargin
-  - ESG vs CarbonEmissions, WaterUsage, and EnergyConsumption
-- Use **boxplots** to compare the spread of ESG scores and ProfitMargins:
-  - Across industries
-  - Across regions
+### 3. Statistical Inference (Hypothesis Testing)
+In order to validate visual trends, I applied formal hypothesis tests (p < 0.05):
 
-### 4. Regional Economic Context 
-- Create a **bar chart** comparing **average ESG_Overall and average ProfitMargin** between:
-  - Higher-GDP regions
-  - Lower-GDP regions
-- This is a **single contextual comparison** to see whether stronger economies show clearer ESG–performance alignment.
-
-### 5. Interpretation
-- Determine whether higher ESG scores are generally associated with:
-  - Higher financial performance
-  - Lower environmental impact
-- Use GDP comparison to explain **why** these relationships differ across regions.
+- **Pearson Correlation (r):**                                                
+  - Tested the linear relationship between ESG_Overall and ProfitMargin.Tested ESG_Overall against all three environmental metrics (Carbon, Water, Energy)
+   
+- **Independent T-Test:**
+  - Compared ESG scores between "High GDP" and "Low GDP" regions to determine if economic maturity is a confounding variable.
 
 ---
 
