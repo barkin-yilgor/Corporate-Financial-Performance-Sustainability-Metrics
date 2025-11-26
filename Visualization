@@ -1,0 +1,64 @@
+##### VISUALIZATIONS
+
+# Scatter plot of ESG Score vs. Profit Margin
+
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=Merged, x='ESG_Overall', y='ProfitMargin', hue='Region', alpha=0.6, palette='viridis')
+plt.title('Does ESG Score Predict Profit Margin?', fontsize=16)
+plt.xlabel('ESG Overall Score')
+plt.ylabel('Profit Margin (%)')
+plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.tight_layout()
+plt.show()
+
+# A 3-panel dashboard
+fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+
+# Carbon Emissions
+sns.scatterplot(ax=axes[0], data=Merged, x='ESG_Overall', y='CarbonEmissions', color='brown', alpha=0.3)
+axes[0].set_title('ESG vs Carbon Emissions')
+axes[0].set_yscale('log')
+
+# Water Usage
+sns.scatterplot(ax=axes[1], data=Merged, x='ESG_Overall', y='WaterUsage', color='blue', alpha=0.3)
+axes[1].set_title('ESG vs Water Usage')
+axes[1].set_yscale('log')
+
+# Energy Consumption
+sns.scatterplot(ax=axes[2], data=Merged, x='ESG_Overall', y='EnergyConsumption', color='orange', alpha=0.3)
+axes[2].set_title('ESG vs Energy Consumption')
+axes[2].set_yscale('log')
+
+plt.suptitle('Do Higher ESG Scores Reduce Environmental Impact?', fontsize=16)
+plt.tight_layout()
+plt.show()
+
+# Scatter plot of Average Regional GDP vs. Average ESG Score
+regional_summary = Merged.groupby('Region')[['GDP', 'ESG_Overall']].mean().reset_index()
+
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=regional_summary, x='GDP', y='ESG_Overall', s=200, color='darkgreen')
+
+for i in range(regional_summary.shape[0]):
+    plt.text(regional_summary.GDP[i], regional_summary.ESG_Overall[i]+0.5,
+             regional_summary.Region[i], fontsize=11, ha='center')
+
+plt.title('Do Wealthier Regions Have Higher ESG Standards?', fontsize=16)
+plt.xlabel('Average Regional GDP')
+plt.ylabel('Average ESG Score')
+plt.grid(True, linestyle='--')
+plt.show()
+
+# Box Plots of Profit Margin by Industry (sorted high-to-low)
+
+plt.figure(figsize=(12, 6))
+
+sorted_index = Merged.groupby('Industry')['ProfitMargin'].median().sort_values(ascending=False).index
+
+sns.boxplot(data=Merged, x='Industry', y='ProfitMargin', order=sorted_index, palette='Set2')
+plt.title('Profit Margins Vary by Industry', fontsize=16)
+plt.xticks(rotation=45, ha='right')
+plt.ylabel('Profit Margin (%)')
+plt.xlabel('')
+plt.tight_layout()
+plt.show()
