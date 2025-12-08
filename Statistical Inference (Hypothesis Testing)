@@ -59,10 +59,10 @@ for metric in metrics:
 
     if p_val < 0.05:
         if corr < 0:
-            print("\n   Reject H0 (Significant relationship).")
-            print("   Higher ESG scores are linked to lower {}.".format(metric))
+            print("\nReject H0 (Significant relationship).")
+            print("Higher ESG scores are linked to lower {}.".format(metric))
         else:
-            print("   Higher ESG scores are linked to HIGHER {}.".format(metric))
+            print("Higher ESG scores are linked to HIGHER {}.".format(metric))
     else:
-        print("\n   FAIL TO REJECT H0 (No significant relationship).")
-        print("   No clear link between ESG and {}.".format(metric))
+        print("\nFAIL TO REJECT H0 (No significant relationship).")
+        print("No clear link between ESG and {}.".format(metric))
