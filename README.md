@@ -90,12 +90,14 @@ My main goal was to analyze four high-impact figures to isolate the following re
  - A 3-panel dashboard (Carbon, Water, Energy) testing whether higher ESG scores correspond to lower resource intensity.
  - A scatter plot comparing Average Regional GDP vs. Average ESG Score to verify if wealthy regions inherently score higher.
  - A boxplot of Profit Margin by Industry (sorted high-to-low) to show why industry-specific benchmarking is necessary.
+ - A correlation matrix summarizing the linear relationships between ESG performance, financial outcomes, environmental impact, and regional GDP to provide a compact quantitative overview of the observed patterns.
 
 ### 3. Statistical Inference (Hypothesis Testing)
 In order to validate visual trends, I applied formal hypothesis tests (p < 0.05):
 
 - **Pearson Correlation (r):**                                                
-  - Tested the linear relationship between ESG_Overall and ProfitMargin.Tested ESG_Overall against all three environmental metrics (Carbon, Water, Energy)
+  - Tested the linear relationship between ESG_Overall and ProfitMargin.
+  - Tested ESG_Overall against all three environmental metrics (Carbon, Water, Energy)
    
 - **Independent T-Test:**
   - Compared ESG scores between "High GDP" and "Low GDP" regions to determine if economic maturity is a confounding variable.
