@@ -125,6 +125,11 @@ In order to validate visual trends, I applied formal hypothesis tests (p < 0.05)
 ### 1. Predictive Modeling (Regression)
 Goal: Determine whether ESG and environmental indicators explain **ProfitMargin**.
 
+Feature Engineering:
+- Applied Z-score standardization (StandardScaler) to all input features before training the Linear Regression model.
+- Reasoning: Standardization ensures that variables measured on different scales (e.g., ESG scores, environmental quantities, and GDP) contribute proportionally to the model and allows regression coefficients to be interpreted more reliably.
+- This step is particularly important for linear models, which are sensitive to feature scale, while tree-based models (Random Forest) were trained on the original (unscaled) data, as they are scale-invariant.
+
 - **Features used:** ESG_Overall, CarbonEmissions, WaterUsage, EnergyConsumption, GDP
 - **Target:** ProfitMargin
 
@@ -137,6 +142,8 @@ Evaluation metrics:
 - R²
 - RMSE
 - Feature importance (to identify which ESG dimensions matter most)
+
+Note: Tree-based models don’t require scaling, so RF was trained on raw features, while linear regression used standardized features. 
 
 ---
 
