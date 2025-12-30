@@ -107,27 +107,32 @@ In order to validate visual trends, I applied formal hypothesis tests (p < 0.05)
 ## Machine Learning Applications
 
 ### 1. Predictive Modeling (Regression)
-
 Goal: Determine whether ESG and environmental indicators explain **ProfitMargin**.
+
+- **Features used:** ESG_Overall, CarbonEmissions, WaterUsage, EnergyConsumption, GDP
+- **Target:** ProfitMargin
 
 Models:
 - **Dummy Regressor** — establishes a baseline (predicting the mean)
 - **Multiple Linear Regression** — tests for linear relationships  
 - **Random Forest Regressor** — captures non-linear effects  
 
-Evaluation:
-- R², RMSE, and feature importance (to identify which ESG dimensions matter most)
+Evaluation metrics:
+- R²
+- RMSE
+- Feature importance (to identify which ESG dimensions matter most)
 
 ---
 
 ### 2. Clustering Analysis (Sustainability Profiles)
-
 Goal: Identify sustainability-performance groups among companies.
 
 Method:
 - **K-Means Clustering** with **ESG_Overall** and **ProfitMargin**
-- Optimal $k$ determined via Elbow Method and Silhouette Score
-
+- Optimal k explored using:
+  - Elbow Method (Inertia)
+  - Silhouette Score
+   
 Possible cluster outcomes:
 - High-ESG / High-Profit 
 - High-ESG / Low-Profit 
