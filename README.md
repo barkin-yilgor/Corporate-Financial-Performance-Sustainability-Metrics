@@ -84,7 +84,23 @@ ESG data is Regional (7 zones), GDP data is Country-level (196 nations).
  - Step B (Aggregation): Group and SUM GDP data by Region and Year.
  - Step C (Merge): Join datasets on ['Region', 'Year'] keys.
 
-### 2. Visualization
+### 2. Summary Statistics
+
+Before visualization, computed key descriptive statistics to establish data quality and baselines:
+
+* **Completeness Verification:**
+    * Confirmed **zero missing values** across all columns (Revenue, ProfitMargin, ESG_Overall, GDP) after the imputation and merge steps, ensuring the dataset was fully prepared for analysis.
+
+* **Industry Baselines:**
+    * Aggregating performance by sector revealed significant structural differences. The **Technology** sector demonstrated the highest average profit margins (18.80%), while capital-intensive sectors like **Transportation** averaged significantly lower (5.37%), highlighting the need for industry-specific benchmarking.
+
+* **Regional Economic Context:**
+    * Grouping data by Region confirmed that economically mature markets (North America, Europe) possess significantly higher average GDP and baseline ESG scores compared to developing regions, supporting the hypothesis of an economic-sustainability link.
+
+* **Variable Distributions:**
+    * ESG_Overall scores ranged from 0 to 100 with a healthy spread, while ProfitMargin showed distinct clustering, later used to identify high-performance groups.
+
+### 3. Visualization
 My main goal was to analyze four high-impact figures to isolate the following relationships:
  - Scatter plot of ESG Score vs. Profit Margin, color-coded by Region.
  - A 3-panel dashboard (Carbon, Water, Energy) testing whether higher ESG scores correspond to lower resource intensity.
@@ -92,7 +108,7 @@ My main goal was to analyze four high-impact figures to isolate the following re
  - A boxplot of Profit Margin by Industry (sorted high-to-low) to show why industry-specific benchmarking is necessary.
  - A correlation matrix summarizing the linear relationships between ESG performance, financial outcomes, environmental impact, and regional GDP to provide a compact quantitative overview of the observed patterns.
 
-### 3. Statistical Inference (Hypothesis Testing)
+### 4. Statistical Inference (Hypothesis Testing)
 In order to validate visual trends, I applied formal hypothesis tests (p < 0.05):
 
 - **Pearson Correlation (r):**                                                
