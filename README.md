@@ -130,8 +130,9 @@ Feature Engineering:
 - Reasoning: Standardization ensures that variables measured on different scales (e.g., ESG scores, environmental quantities, and GDP) contribute proportionally to the model and allows regression coefficients to be interpreted more reliably.
 - This step is particularly important for linear models, which are sensitive to feature scale, while tree-based models (Random Forest) were trained on the original (unscaled) data, as they are scale-invariant.
 
-- **Features used:** ESG_Overall, CarbonEmissions, WaterUsage, EnergyConsumption, GDP
-- **Target:** ProfitMargin
+**Features used:** ESG_Overall, CarbonEmissions, WaterUsage, EnergyConsumption, GDP
+
+**Target:** ProfitMargin
 
 Models:
 - **Dummy Regressor** — establishes a baseline (predicting the mean)
@@ -142,8 +143,6 @@ Evaluation metrics:
 - R²
 - RMSE
 - Feature importance (to identify which ESG dimensions matter most)
-
-Note: Tree-based models don’t require scaling, so RF was trained on raw features, while linear regression used standardized features. 
 
 ---
 
@@ -176,6 +175,7 @@ Possible cluster outcomes:
 - Clustering may reveal distinct **corporate sustainability strategies**
 
 ---
+
 ## Limitations and Future Work
 
 ### Limitations
@@ -188,3 +188,5 @@ Possible cluster outcomes:
 * **Granular Analysis:** Incorporate country-level data to map economic relationships more precisely.
 * **Time-Series Forecasting:** Use advanced models (like ARIMA or LSTM) to predict future performance trends.
 * **Industry-Specific Models:** Build separate machine learning models for distinct sectors (e.g., Tech vs. Energy) to improve accuracy.
+
+---
