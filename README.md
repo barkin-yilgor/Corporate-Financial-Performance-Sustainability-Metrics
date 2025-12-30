@@ -149,3 +149,15 @@ Possible cluster outcomes:
 - Clustering may reveal distinct **corporate sustainability strategies**
 
 ---
+## Limitations and Future Work
+
+### Limitations
+* **Synthetic Data:** The Corporate ESG & Financial Performance Dataset is simulated, so observed trends may be cleaner more distinct than in real-world scenarios.
+* **Regional Aggregation:** Grouping countries into broad regions (e.g., "Europe") masks specific national economic differences.
+* **No Causality:** We established a strong correlation between ESG and profit, but cannot prove that one causes the other.
+* **Non-Linear Relationships:** Simple linear models failed ($R^2 < 0$), confirming that standard formulas cannot easily predict these outcomes.
+
+### Future Work
+* **Granular Analysis:** Incorporate country-level data to map economic relationships more precisely.
+* **Time-Series Forecasting:** Use advanced models (like ARIMA or LSTM) to predict future performance trends.
+* **Industry-Specific Models:** Build separate machine learning models for distinct sectors (e.g., Tech vs. Energy) to improve accuracy.
