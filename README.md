@@ -111,7 +111,8 @@ In order to validate visual trends, I applied formal hypothesis tests (p < 0.05)
 Goal: Determine whether ESG and environmental indicators explain **ProfitMargin**.
 
 Models:
-- **Multiple Linear Regression** — baseline interpretability  
+- **Dummy Regressor** — establishes a baseline (predicting the mean)
+- **Multiple Linear Regression** — tests for linear relationships  
 - **Random Forest Regressor** — captures non-linear effects  
 
 Evaluation:
@@ -125,6 +126,7 @@ Goal: Identify sustainability-performance groups among companies.
 
 Method:
 - **K-Means Clustering** with **ESG_Overall** and **ProfitMargin**
+- Optimal $k$ determined via Elbow Method and Silhouette Score
 
 Possible cluster outcomes:
 - High-ESG / High-Profit 
