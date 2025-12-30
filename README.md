@@ -127,8 +127,12 @@ Evaluation metrics:
 ### 2. Clustering Analysis (Sustainability Profiles)
 Goal: Identify sustainability-performance groups among companies.
 
+Feature Engineering:
+- Applied Z-score standardization (StandardScaler) to ESG_Overall and ProfitMargin.
+- Reasoning: This normalization ensures that the large numerical difference between ESG scores (0–100) and profit percentages (0–1) does not bias the K-Means clustering distances.
+
 Method:
-- **K-Means Clustering** with **ESG_Overall** and **ProfitMargin**
+- **K-Means Clustering** on the standardized features
 - Optimal k explored using:
   - Elbow Method (Inertia)
   - Silhouette Score
