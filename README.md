@@ -101,7 +101,8 @@ Before visualization, computed key descriptive statistics to establish data qual
     * ESG_Overall scores ranged from 0 to 100 with a healthy spread, while ProfitMargin showed distinct clustering, later used to identify high-performance groups.
 
 ### 3. Visualization
-My main goal was to analyze four high-impact figures to isolate the following relationships:
+My main goal was to analyze four high-impact figures to isolate the key relationships, complemented by a correlation matrix that provides a compact summary of interactions among sustainability, financial, environmental, and economic metrics.
+
  - Scatter plot of ESG Score vs. Profit Margin, color-coded by Region.
  - A 3-panel dashboard (Carbon, Water, Energy) testing whether higher ESG scores correspond to lower resource intensity.
  - A scatter plot comparing Average Regional GDP vs. Average ESG Score to verify if wealthy regions inherently score higher.
@@ -142,7 +143,7 @@ Models:
 Evaluation metrics:
 - R²
 - RMSE
-- Feature importance (to identify which ESG dimensions matter most)
+- Feature importance (to identify which predictors matter most for ProfitMargin)
 
 ---
 
